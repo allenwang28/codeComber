@@ -18,6 +18,15 @@ class CppParser(Parser):
 
     def comb_functions(self):
         print "Combing functions for " + self.file_name
+        # Scan imports/includes/etc. at the top of the screen
+        # For C++ files we are going to assume that all #includes are together
+        for line in self.lines:
+            print line.getLine()
+        
+         
+        # If the import is not included, add it
+
+        # Then 
 
     def comb_scope(self):
         print "Combing scope for " + self.file_name
@@ -27,3 +36,15 @@ class CppParser(Parser):
 
     def update_file(self):
         print "Update files for " + self.file_name
+
+    def get_lines(self):
+        super(CppParser, self).get_lines()
+
+    def remove_comments(self):
+        beginning_of_comments = ["//" , "/*", "*"]
+        meaningful_lines = []
+        for line in self.lines:
+            for comment in beginning_of_comments:
+                if not line.getLine().startswith(comment):
+                    meaningful_lines.append(line)
+        self.lines = meaningful_lines

@@ -1,5 +1,3 @@
-#include <iostream>
-
 void greenEggsAndHam()
 {
     int c = 0;
@@ -14,4 +12,6 @@ int main(void)
 {
     int a = 0;
     int b = 0;
+    greenEggsAndHam();
+    greenBoysAreBlue();
 }

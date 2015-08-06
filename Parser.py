@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 import shutil
+from codeLine import CodeLine
 
 class Parser:
     __metaclass__ = ABCMeta
@@ -45,3 +46,21 @@ class Parser:
     @abstractmethod
     def required(self):
         """ Gets all required imports/headers for this code """
+
+    @abstractmethod
+    def get_lines(self):
+        f = open(self.file_name, 'rw')
+        lines = []
+        it = 1
+        for line in f:
+            lines.append(CodeLine(line, it))
+            ++it
+        self.lines = lines
+        self.remove_comments()
+        """ Opens the file, reads all of the lines and stores them in an array of CodeLine objects """ 
+
+    @abstractmethod
+    def remove_comments(self):
+        """ Parses the CodeLine array and removes any comments """
+
+

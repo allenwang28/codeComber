@@ -1,4 +1,6 @@
 from optparse import OptionParser
+import sys
+import os.path
 
 list_of_options = [
         "filenames", 
@@ -31,10 +33,29 @@ def readOptions():
     for arg in args:
         if not_supported(arg):
             parser.error('Unsupported file type')
+        if not os.path.isfile(arg):
+            parser.error("File doesn't exist")
+        if os.path.isfile(arg + ".uncombed"):
+            if not verify_comb():
+                sys.exit(0)
         filenames.append(arg)
 
     return [options, filenames]
 
+def verify_comb():
+    valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
+    print("This file has already been combed.")
+    default = "yes"
+    while True:
+        sys.stdout.write("Are you sure you want to continue? (Y/n): ")
+        choice = raw_input().lower()
+        if choice == "":
+            return valid[default]
+        elif choice in valid:
+            return valid[choice]
+        else:
+            sys.stdout.write("Please respond with 'yes' or 'no'\n")
+    
 
 def not_supported(arg):
     for ending in supported_file_types:

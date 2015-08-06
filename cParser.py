@@ -18,6 +18,12 @@ class CParser(Parser):
 
     def comb_functions(self):
         print "Combing functions for " + self.file_name
+        
+        # Scan imports/includes/etc. at the top of the screen
+         
+        # If the import is not included, add it
+
+        # Then 
 
     def comb_scope(self):
         print "Combing scope for " + self.file_name
