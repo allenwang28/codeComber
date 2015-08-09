@@ -6,6 +6,8 @@ void greenEggsAndHam()
 
 int greenBoysAreBlue()
 {
+    {
+    }
 }
 
 // I'm not here!
@@ -21,4 +23,8 @@ int main(void)
     int b = 0;
     greenEggsAndHam();
     greenBoysAreBlue();
+    if (a == b)
+    {
+        a = 1;
+    }
 }

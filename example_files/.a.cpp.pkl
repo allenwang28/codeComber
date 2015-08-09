@@ -1,9 +1,0 @@
-€]q((ccodeLine
-CodeLine
-qoq}q(UlineqU#include <iostream>
-qU
-lineNumberqKub(hoq}q	(hU>    std::cout << "Reached greenEggsAndHam at 3" << std::endl;
-hKub(hoq
-}q(hU?    std::cout << "Reached greenBoysAreBlue at 9" << std::endl;
-hK	ub(hoq}q(hU4    std::cout << "Reached main at 20" << std::endl;
-hKube.

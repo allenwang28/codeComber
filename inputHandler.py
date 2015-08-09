@@ -12,7 +12,7 @@ supported_file_types = [
         ".c",
         ".py"]
 
-def readOptions():
+def readOptions(t):
     usage = "usage: %prog [filename(s)] [options]"
     parser = OptionParser(prog='comb', usage=usage)
 
@@ -36,8 +36,12 @@ def readOptions():
         if not os.path.isfile(arg):
             parser.error("File doesn't exist")
         if os.path.isfile(arg + ".uncombed"):
-            if not verify_comb():
-                sys.exit(0)
+            if t == "comb":
+                if not verify_comb():
+                    sys.exit(0)
+        else:
+            if t == "uncomb":
+                parser.error("File has never been combed!")
         filenames.append(arg)
 
     return [options, filenames]
@@ -64,8 +68,8 @@ def not_supported(arg):
     return True
 
 
-def getOptions():
-    opts = readOptions()
+def getOptions(t):
+    opts = readOptions(t)
     options = {}
     options["filenames"] = opts[1]
     options["functions"] = opts[0].functions

@@ -61,6 +61,33 @@ class CppParser(Parser):
 
     def comb_scope(self):
         print "Combing scope for " + self.file_name
+        num_braces = 0
+        fun_found = False
+        function_name = ""
+        for index in range(len(self.meaningful_lines)):
+            code_line = self.meaningful_lines[index]
+            line = code_line.getLine()
+            line_number = code_line.getLineNumber()
+            if "{" in line:
+                # Possible start of a function. Now check if the previous one ended with a )
+                if not fun_found:
+                    previous_code_line = self.meaningful_lines[index - 1]
+                    previous_line = previous_code_line.getLine()
+                    previous_line_num = previous_code_line.getLineNumber()
+                    if previous_line.strip().endswith(")"):
+                        # Function found
+                        function_name = previous_line.split()[1].split("(", 1)[0]
+                        spaces = ' ' * (len(line) - len(line.strip())) + '   '
+                        self.cPrint(spaces, line_number + 1, function_name)
+                        fun_found = True
+                else:
+                    spaces = ' ' * (len(line) - len(line.strip())) + '   '
+                    self.cPrint(spaces, line_number + 1, function_name)
+                num_braces += 1
+            if "}" in line:
+                num_braces -= 1
+                if num_braces == 0:
+                    fun_found = False
 
     def cPrint(self, spaces, lineNumber, functionName):  # Construct print statement
         super(CppParser, self).cPrint(spaces, lineNumber, functionName)

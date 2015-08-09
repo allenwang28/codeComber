@@ -2,9 +2,9 @@ import inputHandler
 from cppParser import CppParser
 from cParser import CParser
 
-class Engine:
+class Comber:
     def __init__(self):
-        self.options = inputHandler.getOptions()
+        self.options = inputHandler.getOptions("comb")
         
     def run(self):
         options = self.options
