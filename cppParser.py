@@ -9,10 +9,10 @@ class CppParser(Parser):
         super(CppParser, self).parse(options)
 
     def print_statement_open(self):
-        return "std::cout << "
+        return "std::cout << \""
 
     def print_statement_close(self):
-        return " << std::endl;\n"
+        return "\" << std::endl;\n"
 
     def required(self):
         return "#include <iostream>\n"
@@ -27,11 +27,13 @@ class CppParser(Parser):
             line = code_line.getLine()
             number = code_line.getLineNumber()
             print str(number) + ": " + line
-            while line.startswith('#include'):
+            if line.startswith('#include'):
                 if self.required() in line:
                     import_found = True
                     print "Import found!"
                     break
+            else:
+                break
 
         if not import_found:
             added_lines.append(CodeLine(self.required(), 1)) # We're inserting this at the top
@@ -53,11 +55,14 @@ class CppParser(Parser):
                 previous_code_line = self.meaningful_lines[index - 1]
                 previous_line = previous_code_line.getLine()
                 previous_line_num = previous_code_line.getLineNumber()
-                if previous_line.strip().endswith(")"):
+                stripped_line = previous_line.strip()
+                is_function = stripped_line.endswith(")") and not stripped_line.startswith("if") and not stripped_line.startswith("else")
+                if is_function: 
                     # Function found
                     function_name = previous_line.split()[1].split("(", 1)[0]
                     spaces = ' ' * (len(line) - len(line.strip())) + '   '
-                    self.cPrint(spaces, line_number + 1, function_name)
+                    new_line_number = 1 + line_number + len(self.added_lines)
+                    self.cPrint(spaces, line_number + 1, new_line_number, function_name)
 
     def comb_scope(self):
         print "Combing scope for " + self.file_name
@@ -74,29 +79,31 @@ class CppParser(Parser):
                     previous_code_line = self.meaningful_lines[index - 1]
                     previous_line = previous_code_line.getLine()
                     previous_line_num = previous_code_line.getLineNumber()
-                    if previous_line.strip().endswith(")"):
+
+                    stripped_line = previous_line.strip()
+                    is_function = stripped_line.endswith(")") and not stripped_line.startswith("if") and not stripped_line.startswith("else")
+                    if is_function: 
                         # Function found
                         function_name = previous_line.split()[1].split("(", 1)[0]
                         spaces = ' ' * (len(line) - len(line.strip())) + '   '
-                        self.cPrint(spaces, line_number + 1, function_name)
+                        new_line_number = 1 + line_number + len(self.added_lines)
+                        self.cPrint(spaces, line_number + 1, new_line_number, function_name)
                         fun_found = True
                 else:
                     spaces = ' ' * (len(line) - len(line.strip())) + '   '
-                    self.cPrint(spaces, line_number + 1, function_name)
+                    new_line_number = 1 + line_number + len(self.added_lines)
+                    self.cPrint(spaces, line_number + 1, new_line_number, function_name)
                 num_braces += 1
             if "}" in line:
                 num_braces -= 1
                 if num_braces == 0:
                     fun_found = False
 
-    def cPrint(self, spaces, lineNumber, functionName):  # Construct print statement
-        super(CppParser, self).cPrint(spaces, lineNumber, functionName)
+    def cPrint(self, spaces, lineNumber, newLineNumber, functionName):  # Construct print statement
+        super(CppParser, self).cPrint(spaces, lineNumber, newLineNumber, functionName)
 
     def create_backup(self): 
         super(CppParser, self).create_backup()
-
-    def update_file(self):
-        print "Update files for " + self.file_name
 
     def get_lines(self):
         super(CppParser, self).get_lines()
@@ -116,4 +123,3 @@ class CppParser(Parser):
 
     def save_data(self):
         super(CppParser, self).save_data()
-    

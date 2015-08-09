@@ -30,8 +30,8 @@ class Parser:
         """ Gets the print statement for this language """
     
     @abstractmethod
-    def cPrint(self, spaces, lineNumber, functionName):
-        line = spaces + self.print_statement_open() + "\"Reached " + functionName + " at " + str(lineNumber) + "\"" + self.print_statement_close()
+    def cPrint(self, spaces, lineNumber, newLineNumber, functionName):
+        line = spaces + self.print_statement_open() + "Reached " + functionName + " at line " + str(newLineNumber) + self.print_statement_close()
         self.added_lines.append(CodeLine(line, lineNumber))
 
         """ Constructs the print statement and returns a CodeLine """
@@ -48,10 +48,6 @@ class Parser:
     def create_backup(self):
         shutil.copy2(self.file_name, self.file_name + ".uncombed")
         """ Create backup only when the combing is successful """
-
-    @abstractmethod
-    def update_file(self):
-        """ Will save the new file """
 
     @abstractmethod
     def required(self):

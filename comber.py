@@ -18,7 +18,7 @@ class Comber:
             if filename.endswith(".cpp"):
                 parsers.append(CppParser(filename))
             elif filename.endswith(".c"):
-                parsers.append(cParser(filename))
+                parsers.append(CParser(filename))
         self.parsers = parsers
 
     def parse(self):
