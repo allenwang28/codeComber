@@ -1,10 +1,10 @@
 class CodeLine:
-    def __init__(line, lineNumber):
+    def __init__(self, line, lineNumber):
         self.line = line
         self.lineNumber = lineNumber
 
     def getLineNumber(self):
-        return self.line
+        return self.lineNumber
 
     def getLine(self):
         return self.line

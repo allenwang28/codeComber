@@ -10,4 +10,5 @@ eng = engine.Engine()
 eng.run()
 EOF1
 
+chmod +x comb
 mv comb /usr/local/bin
